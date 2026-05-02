@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your cart is waiting</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background-color: #3b1f0e; padding: 32px 40px; text-align: center; }
+    .header h1 { color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 0.5px; }
+    .body { padding: 32px 40px; }
+    .body p { color: #444444; font-size: 15px; line-height: 1.6; margin: 0 0 24px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    th { text-align: left; font-size: 12px; color: #888888; text-transform: uppercase; padding: 8px 0; border-bottom: 1px solid #eeeeee; }
+    td { padding: 12px 0; font-size: 14px; color: #333333; border-bottom: 1px solid #f0f0f0; }
+    .total-row td { font-weight: bold; font-size: 15px; border-bottom: none; padding-top: 16px; }
+    .cta { display: block; width: fit-content; margin: 0 auto 32px; background-color: #3b1f0e; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-size: 15px; font-weight: bold; }
+    .footer { background-color: #f4f4f4; padding: 20px 40px; text-align: center; font-size: 12px; color: #aaaaaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>You left something behind ☕</h1>
+    </div>
+    <div class="body">
+      <p>Your cart is saved and ready for you. Here's what you had:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td>{{this.productId}}{{#if this.variantId}} ({{this.variantId}}){{/if}}</td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.price}}</td>
+          </tr>
+          {{/each}}
+          <tr class="total-row">
+            <td colspan="2">Total</td>
+            <td>{{total}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <a class="cta" href="#">Complete your order</a>
+      <p style="font-size:13px;color:#888888;text-align:center;">This cart will expire in 7 days.</p>
+    </div>
+    <div class="footer">
+      You received this email because you added items to your cart. If this wasn't you, please ignore this email.
+    </div>
+  </div>
+</body>
+</html>
