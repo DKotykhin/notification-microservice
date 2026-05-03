@@ -37,7 +37,10 @@
         <tbody>
           {{#each items}}
           <tr>
-            <td>{{this.productId}}{{#if this.variantId}} ({{this.variantId}}){{/if}}</td>
+            <td>
+              {{#if this.imageUrl}}<img src="{{this.imageUrl}}" alt="{{this.title}}" width="40" height="40" style="vertical-align:middle;border-radius:4px;margin-right:8px;" />{{/if}}
+              {{this.title}}{{#if this.variantName}} - <span style="color:#888888;">{{this.variantName}}</span>{{/if}}
+            </td>
             <td>{{this.quantity}}</td>
             <td>{{this.price}}</td>
           </tr>
