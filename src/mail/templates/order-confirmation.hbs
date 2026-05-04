@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order confirmed</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background-color: #3b1f0e; padding: 32px 40px; text-align: center; }
+    .header h1 { color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 0.5px; }
+    .header p { color: #c9a97a; margin: 8px 0 0; font-size: 14px; }
+    .body { padding: 32px 40px; }
+    .body p { color: #444444; font-size: 15px; line-height: 1.6; margin: 0 0 24px; }
+    .order-id { font-family: monospace; background: #f4f4f4; padding: 2px 8px; border-radius: 4px; font-size: 13px; color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    th { text-align: left; font-size: 12px; color: #888888; text-transform: uppercase; padding: 8px 0; border-bottom: 1px solid #eeeeee; }
+    td { padding: 12px 0; font-size: 14px; color: #333333; border-bottom: 1px solid #f0f0f0; }
+    .total-row td { font-weight: bold; font-size: 15px; border-bottom: none; padding-top: 16px; }
+    .footer { background-color: #f4f4f4; padding: 20px 40px; text-align: center; font-size: 12px; color: #aaaaaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Your order is confirmed ☕</h1>
+      <p>Thank you for your purchase!</p>
+    </div>
+    <div class="body">
+      <p>
+        Order <span class="order-id">{{orderId}}</span> has been received and is being prepared.
+        We'll notify you when it ships.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td>
+              {{#if this.imageUrl}}<img src="{{this.imageUrl}}" alt="{{this.title}}" width="40" height="40" style="vertical-align:middle;border-radius:4px;margin-right:8px;" />{{/if}}
+              {{this.title}}{{#if this.variantName}} - <span style="color:#888888;">{{this.variantName}}</span>{{/if}}
+            </td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.unitPrice}}</td>
+          </tr>
+          {{/each}}
+          <tr class="total-row">
+            <td colspan="2">Total</td>
+            <td>{{total}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:#888888;text-align:center;">Placed on {{createdAt}}</p>
+    </div>
+    <div class="footer">
+      You received this email because you placed an order. If this wasn't you, please contact support.
+    </div>
+  </div>
+</body>
+</html>
