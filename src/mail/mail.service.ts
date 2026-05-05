@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
-import type { EmailRequest } from './email.request.interface';
 import { TemplateService } from './template.service';
+import { EmailJobPayload } from 'src/email-queue/email-job.interface';
 
 @Injectable()
 export class MailService {
@@ -11,7 +11,7 @@ export class MailService {
     private readonly templateService: TemplateService,
   ) {}
 
-  async sendMail(emailRequest: EmailRequest) {
+  async sendMail(emailRequest: EmailJobPayload) {
     const htmlContent = emailRequest.template
       ? await this.templateService.getTemplate(emailRequest.template, emailRequest.context || {})
       : emailRequest.html;

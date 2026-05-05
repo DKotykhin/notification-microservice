@@ -2,11 +2,11 @@ import { Inject, Logger, OnModuleInit } from '@nestjs/common';
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { Job } from 'bullmq';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 
 import { USER_SERVICE_NAME, type User, type UserServiceClient } from 'src/generated-types/user';
 import { MailService } from 'src/mail/mail.service';
-import { EMAIL_JOB_SEND_CONFIRMATION, EMAIL_QUEUE } from './email-queue.constants';
+import { EMAIL_JOB_SEND, EMAIL_QUEUE } from './email-queue.constants';
 import type { EmailJobPayload } from './email-job.interface';
 
 @Processor(EMAIL_QUEUE)
@@ -26,24 +26,27 @@ export class EmailProcessor extends WorkerHost implements OnModuleInit {
   }
 
   async process(job: Job<EmailJobPayload>): Promise<void> {
-    if (job.name === EMAIL_JOB_SEND_CONFIRMATION) {
+    if (job.name === EMAIL_JOB_SEND) {
       const payload = job.data;
       this.logger.log(`Processing ${job.name} (attempt ${job.attemptsMade + 1})`);
       const toEmail = await this.resolveEmail(payload);
       await this.mailService.sendMail({
         to: toEmail,
         subject: payload.subject,
+        html: payload.html,
         template: payload.template,
         context: payload.context,
       });
-      this.logger.log(`Order confirmation email sent to ${toEmail}`);
+      this.logger.log(`Email (${payload.template ?? 'html'}) sent to ${toEmail}`);
     }
   }
 
   private async resolveEmail(payload: EmailJobPayload): Promise<string> {
     if (payload.to) return payload.to;
     if (!payload.userId) throw new Error('Job payload must include either to or userId');
-    const user: User = await firstValueFrom(this.userServiceClient.getUserById({ id: payload.userId }));
+    const user: User = await firstValueFrom(
+      this.userServiceClient.getUserById({ id: payload.userId }).pipe(timeout(5000)),
+    );
     return user.email;
   }
 

@@ -1,10 +1,10 @@
-import { Controller, Logger, UseInterceptors } from '@nestjs/common';
+import { Controller, Logger, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 
 import { RmqService } from 'src/rmq/rmq.service';
 import { NotificationsService } from './notifications.service';
-import type { EmailJobPayload } from 'src/email-queue/email-job.interface';
 import { RmqMetricsInterceptor } from 'src/supervision/metrics/interceptors';
+import { EmailNotificationDto } from './dto/email-notification.dto';
 
 @Controller()
 @UseInterceptors(RmqMetricsInterceptor)
@@ -17,9 +17,10 @@ export class NotificationsController {
   ) {}
 
   @EventPattern('notification.email.send')
-  async sendNotificationEmail(@Ctx() context: RmqContext, @Payload() payload: EmailJobPayload) {
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async sendNotificationEmail(@Ctx() context: RmqContext, @Payload() payload: EmailNotificationDto) {
     const event = 'notification.email.send';
-    this.logger.log(`Received email job for user ${payload?.userId}, queuing...`);
+    this.logger.log(`Received email job for ${payload?.userId ?? payload?.to}, queuing...`);
 
     try {
       await this.notificationsService.enqueueEmail(payload);

@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
 import { USER_SERVICE_NAME, USER_V1_PACKAGE_NAME } from 'src/generated-types/user';
 import { MailModule } from 'src/mail/mail.module';
@@ -21,6 +23,7 @@ import { EmailProcessor } from './email.processor';
       inject: [ConfigService],
     }),
     BullModule.registerQueue({ name: EMAIL_QUEUE }),
+    BullBoardModule.forFeature({ name: EMAIL_QUEUE, adapter: BullMQAdapter }),
     MailModule,
     ClientsModule.registerAsync([
       {

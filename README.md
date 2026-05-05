@@ -73,7 +73,6 @@ src/
 │   ├── mail.module.ts               # Mailer module configuration
 │   ├── mail.service.ts              # Email sending logic
 │   ├── template.service.ts          # Handlebars template rendering
-│   ├── email.request.interface.ts   # EmailRequest type (MailService input)
 │   └── templates/                   # Email templates (.hbs files)
 ├── notifications/
 │   ├── notifications.module.ts
@@ -101,11 +100,12 @@ src/
 
 ```typescript
 interface EmailJobPayload {
-  userId?: string;              // Resolved via gRPC to get recipient address
-  to?: string;                  // Recipient address (used directly if present)
+  userId?: string;               // Resolved via gRPC to get recipient address
+  to?: string;                   // Recipient address (used directly if present)
   subject: string;
-  template: string;             // Template name (without .hbs extension)
-  context: Record<string, unknown>;  // Template variables
+  html?: string;                 // Raw HTML content (alternative to template)
+  template?: string;             // Template name (without .hbs extension)
+  context?: Record<string, unknown>;  // Template variables
 }
 ```
 
@@ -117,11 +117,11 @@ One of `userId` or `to` must be provided. `userId` triggers a gRPC call to the u
 - **abandoned-cart** — sent as a series of three reminders; context: `{ items, total, cartExpiresInDays }`
 - **verify-email** — email verification; context: `{ name, verificationLink }`
 - **reset-password** — password reset; context: `{ name, resetLink }`
-- **reset-password-confirmation** — password reset confirmation
-- **new-login** — new login alert; context: `{ name, location, device, time }`
-- **account-locked** — account locked notification
-- **account-banned** — account banned notification
-- **account-unbanned** — account unbanned notification
+- **reset-password-confirmation** — password reset confirmation; context: `{ name }`
+- **new-login** — new login alert; context: `{ name, device, ipAddress, location, timestamp }`
+- **account-locked** — account locked notification; context: `{ name, lockoutMinutes }`
+- **account-banned** — account banned notification; context: `{ name, reason }`
+- **account-unbanned** — account unbanned notification; context: `{ name }`
 
 ## Inter-service Communication
 
@@ -198,6 +198,10 @@ npm run test:e2e
 ```
 
 ## Observability
+
+### Bull Board
+
+A job queue dashboard is available at `/queues`. It shows all queued, active, completed, delayed, and failed jobs in the `email` queue, and allows manual job retries — no Redis CLI required.
 
 ### Metrics
 

@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { ExpressAdapter } from '@bull-board/express';
 
 import { validateEnv } from './utils/validators/env-validator';
 import { EnvironmentVariables } from './utils/env.dto';
@@ -16,6 +18,10 @@ import { EmailQueueModule } from './email-queue/email-queue.module';
       isGlobal: true,
       envFilePath: ['.env.local'],
       validate: (config) => validateEnv(config, EnvironmentVariables),
+    }),
+    BullBoardModule.forRoot({
+      route: '/queues',
+      adapter: ExpressAdapter,
     }),
     HealthCheckModule,
     RmqModule,
