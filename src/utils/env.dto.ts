@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNumber, IsString, IsUrl } from 'class-validator';
+import { IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNumber, IsString, IsUrl, Max, Min } from 'class-validator';
 
 export class EnvironmentVariables {
   @IsString()
@@ -46,4 +46,22 @@ export class EnvironmentVariables {
   @IsBoolean()
   @Transform(({ value }) => value === 'true' || value === true)
   readonly MAIL_SECURE: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly REDIS_HOST: string;
+
+  @IsInt()
+  @Min(0)
+  @Max(65535)
+  readonly REDIS_PORT: number;
+
+  @IsInt()
+  @Min(0)
+  @Max(15)
+  readonly REDIS_DB: number;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly USER_SERVICE_URL: string;
 }

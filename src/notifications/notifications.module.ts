@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 
-import { MailService } from 'src/mail/mail.service';
 import { RmqService } from 'src/rmq/rmq.service';
-import { TemplateService } from 'src/mail/template.service';
+import { EmailQueueModule } from 'src/email-queue/email-queue.module';
 import { NotificationsService } from './notifications.service';
 import { NotificationsController } from './notifications.controller';
 
 @Module({
+  imports: [EmailQueueModule],
   controllers: [NotificationsController],
-  providers: [NotificationsService, MailService, RmqService, TemplateService],
+  providers: [NotificationsService, RmqService],
 })
 export class NotificationsModule {}

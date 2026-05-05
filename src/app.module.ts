@@ -8,6 +8,7 @@ import { RmqModule } from './rmq/rmq.module';
 import { MailModule } from './mail/mail.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MetricsModule } from './supervision/metrics/metrics.module';
+import { EmailQueueModule } from './email-queue/email-queue.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MetricsModule } from './supervision/metrics/metrics.module';
     MailModule,
     NotificationsModule,
     MetricsModule,
+    EmailQueueModule,
   ],
   controllers: [],
   providers: [],
