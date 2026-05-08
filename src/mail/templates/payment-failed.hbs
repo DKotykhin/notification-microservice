@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment failed</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background-color: #8b1a1a; padding: 32px 40px; text-align: center; }
+    .header h1 { color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 0.5px; }
+    .header p { color: #f4a0a0; margin: 8px 0 0; font-size: 14px; }
+    .body { padding: 32px 40px; }
+    .body p { color: #444444; font-size: 15px; line-height: 1.6; margin: 0 0 24px; }
+    .order-id { font-family: monospace; background: #f4f4f4; padding: 2px 8px; border-radius: 4px; font-size: 13px; color: #333; }
+    .amount { font-size: 28px; font-weight: bold; color: #8b1a1a; text-align: center; margin: 24px 0; }
+    .footer { background-color: #f4f4f4; padding: 20px 40px; text-align: center; font-size: 12px; color: #aaaaaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Payment failed</h1>
+      <p>We were unable to process your payment.</p>
+    </div>
+    <div class="body">
+      <p>
+        Unfortunately, your payment of <strong>{{amount}}</strong> for order
+        <span class="order-id">{{orderId}}</span> could not be processed.
+      </p>
+      <p>
+        This can happen due to insufficient funds, an expired card, or a bank decline.
+        Please check your payment details and try again.
+      </p>
+      <p style="font-size:13px;color:#888888;text-align:center;">
+        If the problem persists, please contact your bank or reach out to our support team.
+      </p>
+    </div>
+    <div class="footer">
+      You received this email because a payment attempt was made on your account. If this wasn't you, please contact support.
+    </div>
+  </div>
+</body>
+</html>
