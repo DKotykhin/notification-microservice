@@ -6,7 +6,7 @@ import { ExpressAdapter } from '@bull-board/express';
 import { validateEnv } from './utils/validators/env-validator';
 import { EnvironmentVariables } from './utils/env.dto';
 import { HealthCheckModule } from './health-check/health-check.module';
-import { RmqModule } from './rmq/rmq.module';
+import { RmqConsumerModule } from './rmq-consumer/rmq-consumer.module';
 import { MailModule } from './mail/mail.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MetricsModule } from './supervision/metrics/metrics.module';
@@ -24,7 +24,7 @@ import { EmailQueueModule } from './email-queue/email-queue.module';
       adapter: ExpressAdapter,
     }),
     HealthCheckModule,
-    RmqModule,
+    RmqConsumerModule,
     MailModule,
     NotificationsModule,
     MetricsModule,

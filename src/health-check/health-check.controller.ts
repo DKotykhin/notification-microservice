@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
-import { RmqService } from 'src/rmq/rmq.service';
+import { RmqConsumerService } from 'src/rmq-consumer/rmq-consumer.service';
 
 interface HealthCheckResponse {
   serving: boolean;
@@ -9,7 +9,7 @@ interface HealthCheckResponse {
 
 @Controller()
 export class HealthCheckController {
-  constructor(private readonly rmqService: RmqService) {}
+  constructor(private readonly rmqService: RmqConsumerService) {}
   protected readonly logger = new Logger(HealthCheckController.name);
 
   @MessagePattern('health.check')

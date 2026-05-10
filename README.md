@@ -78,9 +78,9 @@ src/
 │   ├── notifications.module.ts
 │   ├── notifications.controller.ts  # Consumes RabbitMQ events, enqueues BullMQ jobs
 │   └── notifications.service.ts     # Calls emailQueue.add()
-├── rmq/
-│   ├── rmq.module.ts
-│   └── rmq.service.ts               # RabbitMQ ack/nack handling
+├── rmq-consumer/
+│   ├── rmq-consumer.module.ts
+│   └── rmq-consumer.service.ts      # RabbitMQ ack/nack handling
 ├── supervision/
 │   ├── metrics/                     # Prometheus metrics
 │   └── tracing/                     # OpenTelemetry configuration

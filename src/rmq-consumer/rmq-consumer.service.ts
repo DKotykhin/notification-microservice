@@ -5,7 +5,7 @@ import { Channel, ConsumeMessage } from 'amqplib';
 import { Counter } from 'prom-client';
 
 @Injectable()
-export class RmqService {
+export class RmqConsumerService {
   private readonly SERVICE_NAME: string;
 
   constructor(
@@ -14,7 +14,7 @@ export class RmqService {
   ) {
     this.SERVICE_NAME = 'notification-microservice';
   }
-  private readonly logger = new Logger(RmqService.name);
+  private readonly logger = new Logger(RmqConsumerService.name);
 
   ackMessage(context: RmqContext, event?: string) {
     const channel = context.getChannelRef() as Channel;

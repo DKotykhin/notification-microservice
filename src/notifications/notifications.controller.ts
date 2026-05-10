@@ -1,7 +1,7 @@
 import { Controller, Logger, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 
-import { RmqService } from 'src/rmq/rmq.service';
+import { RmqConsumerService } from 'src/rmq-consumer/rmq-consumer.service';
 import { NotificationsService } from './notifications.service';
 import { RmqMetricsInterceptor } from 'src/supervision/metrics/interceptors';
 import { EmailNotificationDto } from './dto/email-notification.dto';
@@ -12,7 +12,7 @@ export class NotificationsController {
   protected readonly logger = new Logger(NotificationsController.name);
 
   constructor(
-    private readonly rmqService: RmqService,
+    private readonly rmqService: RmqConsumerService,
     private readonly notificationsService: NotificationsService,
   ) {}
 

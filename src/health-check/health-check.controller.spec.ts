@@ -2,13 +2,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RmqContext } from '@nestjs/microservices';
 import { HealthCheckController } from './health-check.controller';
-import { RmqService } from 'src/rmq/rmq.service';
+import { RmqConsumerService } from 'src/rmq-consumer/rmq-consumer.service';
 
 describe('HealthCheckController', () => {
   let controller: HealthCheckController;
-  let rmqService: jest.Mocked<RmqService>;
+  let rmqService: jest.Mocked<RmqConsumerService>;
 
-  const mockRmqService = {
+  const mockRmqConsumerService = {
     ackMessage: jest.fn(),
     nackMessage: jest.fn(),
   };
@@ -20,14 +20,14 @@ describe('HealthCheckController', () => {
       controllers: [HealthCheckController],
       providers: [
         {
-          provide: RmqService,
-          useValue: mockRmqService,
+          provide: RmqConsumerService,
+          useValue: mockRmqConsumerService,
         },
       ],
     }).compile();
 
     controller = module.get<HealthCheckController>(HealthCheckController);
-    rmqService = module.get(RmqService);
+    rmqService = module.get(RmqConsumerService);
   });
 
   it('should be defined', () => {
@@ -55,7 +55,7 @@ describe('HealthCheckController', () => {
       });
     });
 
-    it('should acknowledge the message via RmqService', () => {
+    it('should acknowledge the message via RmqConsumerService', () => {
       controller.healthCheck(mockContext);
 
       expect(rmqService.ackMessage).toHaveBeenCalledTimes(1);
